@@ -38,4 +38,13 @@ class CalculateTotalTest < Minitest::Test
     total = CalculateTotal.new.call(input: input)
     assert_equal 11, total
   end
+
+  def test_handles_multiple_spaces_between_numbers
+    input = StringIO.new(
+      "1  2\n" \
+      "3  4"
+    )
+    total = CalculateTotal.new.call(input: input)
+    assert_equal 2, total
+  end
 end
