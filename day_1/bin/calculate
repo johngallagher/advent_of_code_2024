@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require_relative "../calculate_total.rb"
+puts CalculateTotal.new.call(input: File.open("input.txt"))
