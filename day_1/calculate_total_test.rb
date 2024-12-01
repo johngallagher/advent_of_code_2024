@@ -2,49 +2,15 @@ require 'minitest/autorun'
 require_relative 'calculate_total'
 
 class CalculateTotalTest < Minitest::Test
-  def test_returns_difference_of_zero_between_two_equal_numbers
+  def test_calculates_similarity_of_two_fives_as_five
     input = StringIO.new("5 5")
     total = CalculateTotal.new.call(input: input)
-    assert_equal 0, total
+    assert_equal 5, total
   end
 
-  def test_returns_difference_of_one_between_two_numbers_that_are_close
-    input = StringIO.new("5 6")
+  def test_calculates_similarity_when_first_number_is_found_twice_in_second_column
+    input = StringIO.new("5 5\n3 3")
     total = CalculateTotal.new.call(input: input)
-    assert_equal 1, total
-  end
-
-  def test_returns_difference_when_first_number_is_larger_than_second
-    input = StringIO.new("6 5")
-    total = CalculateTotal.new.call(input: input)
-    assert_equal 1, total
-  end
-
-  def test_adds_distances_together
-    input = StringIO.new("1 2\n3 4")
-    total = CalculateTotal.new.call(input: input)
-    assert_equal 2, total
-  end
-
-  def test_adds_with_sorting
-    input = StringIO.new(
-      "3 4\n" \
-      "4 3\n" \
-      "2 5\n" \
-      "1 3\n" \
-      "3 9\n" \
-      "3 3"
-    )
-    total = CalculateTotal.new.call(input: input)
-    assert_equal 11, total
-  end
-
-  def test_handles_multiple_spaces_between_numbers
-    input = StringIO.new(
-      "1  2\n" \
-      "3  4"
-    )
-    total = CalculateTotal.new.call(input: input)
-    assert_equal 2, total
+    assert_equal 8, total
   end
 end
