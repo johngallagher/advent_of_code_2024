@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/determine_report_safety.rb"
+puts DetermineReportSafety.new.call(input: File.open("input.txt"))
