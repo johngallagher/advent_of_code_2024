@@ -37,4 +37,17 @@ class DetermineReportSafetyTest < Minitest::Test
     result = DetermineReportSafety.new.call(input:)
     assert_equal 1, result
   end
+
+  def test_example_provided
+    input = StringIO.new(
+      "7 6 4 2 1\n" \
+      "1 2 7 8 9\n" \
+      "9 7 6 2 1\n" \
+      "1 3 2 4 5\n" \
+      "8 6 4 4 1\n" \
+      "1 3 6 7 9\n"
+    )
+    result = DetermineReportSafety.new.call(input:)
+    assert_equal 2, result
+  end
 end
