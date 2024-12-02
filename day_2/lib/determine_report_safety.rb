@@ -3,7 +3,8 @@ class DetermineReportSafety
     input
       .read
       .split("\n")
-      .count { |text| Report.from_text(text).safe_with_problem_dampener? }
+      .map { |text| Report.from_text(text) }
+      .count { |report| report.safe? || report.safe_with_problem_dampener? }
   end
 
   class Report
