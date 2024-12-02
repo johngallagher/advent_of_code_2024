@@ -3,8 +3,7 @@ class DetermineReportSafety
     input
       .read
       .split("\n")
-      .map { |text| Report.from_text(text) }
-      .count { |report| report.safe_with_problem_dampener? }
+      .count { |text| Report.from_text(text).safe_with_problem_dampener? }
   end
 
   class Report
@@ -28,12 +27,11 @@ class DetermineReportSafety
     end
 
     def safe_with_problem_dampener?
-      new_report_without_first_number = Report.new(@numbers.reject.with_index { |_, index| index == 0 })
-      new_report_without_second_number = Report.new(@numbers.reject.with_index { |_, index| index == 1 })
-      new_report_without_third_number = Report.new(@numbers.reject.with_index { |_, index| index == 2 })
-      new_report_without_fourth_number = Report.new(@numbers.reject.with_index { |_, index| index == 3 })
-      new_report_without_fifth_number = Report.new(@numbers.reject.with_index { |_, index| index == 4 })
-      new_report_without_first_number.safe? || new_report_without_second_number.safe? || new_report_without_third_number.safe? || new_report_without_fourth_number.safe? || new_report_without_fifth_number.safe?
+      safe_statuses = []
+      @numbers.each_with_index do |_, index|
+        safe_statuses << Report.new(@numbers.reject.with_index { |_, i| i == index }).safe?
+      end
+      safe_statuses.any? { |safe| safe == true }
     end
   end
 end
