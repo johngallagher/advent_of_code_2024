@@ -11,27 +11,41 @@ class DetermineReportSafety
       new(text.split(" ").map(&:to_i))
     end
 
-    def initialize(numbers)
-      @numbers = numbers
+    def without_level_at_index(index)
+      self.class.new(@levels.reject.with_index { |_, i| i == index })
+    end
+
+    def initialize(levels)
+      @levels = levels
     end
 
     def safe?
-      numbers_are_ascending = @numbers.sort == @numbers
-      numbers_are_descending = @numbers.sort.reverse == @numbers
-      adjacent_numbers_are_within_limits = @numbers.each_cons(2).to_a.all? do |a, b|
-        difference = (a - b).abs
-        difference > 0 && difference < 4
-      end
-
-      (numbers_are_ascending || numbers_are_descending) && adjacent_numbers_are_within_limits
+      (levels_ascending? || levels_descending?) && adjacent_levels_are_within_limits?
     end
 
     def safe_with_problem_dampener?
       safe_statuses = []
-      @numbers.each_with_index do |_, index|
-        safe_statuses << Report.new(@numbers.reject.with_index { |_, i| i == index }).safe?
+      @levels.each_with_index do |_, index|
+        safe_statuses << without_level_at_index(index).safe?
       end
       safe_statuses.any? { |safe| safe == true }
     end
+
+    def levels_ascending?
+      @levels.sort == @levels
+    end
+    
+    def levels_descending?
+      @levels.sort.reverse == @levels
+    end
+
+    def adjacent_levels_are_within_limits?
+      @levels.each_cons(2).to_a.all? do |a, b|
+        difference = (a - b).abs
+        difference > 0 && difference < 4
+      end
+    end
+
+
   end
 end
