@@ -1,10 +1,9 @@
 class Scanner
   def call(input)
-    a, b = input
-            .gsub('mul(','')
-            .gsub(')', '')
-            .split(",")
-            .map(&:to_i)
-    a * b
+    input
+      .scan(/mul\((\d+),(\d+)\)/)
+      # .tap { |a| throw a }
+      .map { |a, b| a.to_i * b.to_i }
+      .sum
   end
 end
