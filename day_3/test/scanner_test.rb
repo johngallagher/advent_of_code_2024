@@ -37,6 +37,10 @@ class ScannerTest < Minitest::Test
     assert_equal 1736748, result
   end
   
+  def test_newlines
+    result = Scanner.new.call("mul(1,2)\nmul(1,2)")
+    assert_equal 4, result
+  end
 
   def complex_example
     File.read('test/fixtures/complex.txt')

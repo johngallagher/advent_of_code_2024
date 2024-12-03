@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/scanner'
+
+puts Scanner.new.call(File.read('input.txt'))
