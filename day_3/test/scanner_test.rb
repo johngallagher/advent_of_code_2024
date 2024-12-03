@@ -42,27 +42,27 @@ class ScannerTest < Minitest::Test
     assert_equal 4, result
   end
 
-  def test_splitting_on_do_or_dont_with_more_characters
-    result = Scanner.new.split.call("ado()bbdon't()c")
-    assert_equal ({ do: ["a", "bb"], dont: ["c"] }), result
-  end
-
-
-  def test_several_donts_in_a_row
-    result = Scanner.new.split.call("ado()bbdon't()cdon't()d")
-    assert_equal ({ do: ["a", "bb"], dont: ["c", "d"] }), result
-  end
-
-  def test_example_with_donts
-    result = Scanner.new.split.call("xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))")
-    assert_equal ({:do=>["xmul(2,4)&mul[3,7]!^", "?mul(8,5))"], :dont=>["_mul(5,5)+mul(32,64](mul(11,8)un"]}), result
-  end
-
   def test_example_with_donts_with_call
     result = Scanner.new.call("xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))")
     assert_equal 48, result
   end
 
+  def test_splitting_on_do_or_dont_with_more_characters
+    result = Scanner.new.remove_disabled_instructions.call("ado()bbdon't()c")
+    assert_equal ["a", "bb"], result
+  end
+
+  def test_several_donts_in_a_row
+    result = Scanner.new.remove_disabled_instructions.call("ado()bbdon't()cdon't()d")
+    assert_equal ["a", "bb"], result
+  end
+
+  def test_example_with_donts
+    result = Scanner.new.remove_disabled_instructions.call("xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))")
+    assert_equal ["xmul(2,4)&mul[3,7]!^", "?mul(8,5))"], result
+  end
+
+  private
 
   def complex_example
     File.read('test/fixtures/complex.txt')

@@ -1,8 +1,7 @@
 class Scanner
   def call(input)
     input
-      .then(&split)
-      .fetch(:do)
+      .then(&remove_disabled_instructions)
       .flat_map do |operation|
         operation
           .scan(/mul\((\d+),(\d+)\)/)
@@ -10,7 +9,7 @@ class Scanner
       end.sum
   end
 
-  def split
+  def remove_disabled_instructions
     lambda do |input|
       current_operation = :do
       do_operations = []
@@ -30,10 +29,7 @@ class Scanner
             throw "Never get here"
           end
         end
-      {
-        do: do_operations,
-        dont: dont_operations
-      }
+      do_operations
     end
   end
 end
