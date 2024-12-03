@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+clear; ruby -I. -Ilib test/scanner_test.rb
