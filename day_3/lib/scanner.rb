@@ -12,24 +12,21 @@ class Scanner
   def remove_disabled_instructions
     lambda do |input|
       current_operation = :do
-      do_operations = []
-      dont_operations = []
       input
         .split(%r{(don't\(\)|do\(\))})
-        .each do |value|
+        .inject([]) do |operations, value|
           if value == "do()"
             current_operation = :do
+            operations
           elsif value == "don't()"
             current_operation = :dont
+            operations
           elsif current_operation == :do
-            do_operations << value
-          elsif current_operation == :dont
-            dont_operations << value
+            operations + [value]
           else
-            throw "Never get here"
+            operations
           end
         end
-      do_operations
     end
   end
 end
